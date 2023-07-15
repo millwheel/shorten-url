@@ -7,4 +7,8 @@ import lombok.Setter;
 @Setter
 public class UrlResponseForm {
     private Data data;
+
+    public UrlResponseForm(Data data) {
+        this.data = data;
+    }
 }

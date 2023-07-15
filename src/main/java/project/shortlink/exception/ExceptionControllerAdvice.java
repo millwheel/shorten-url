@@ -11,12 +11,12 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalExceptionHandler(IllegalArgumentException e){
-        return new ErrorResult("BAD", e.getMessage());
+        return new ErrorResult("WRONG_PARAMETER", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(RuntimeException.class)
-    public ErrorResult runtimeExceptionHandler(RuntimeException e){
+    @ExceptionHandler(NullPointerException.class)
+    public ErrorResult runtimeExceptionHandler(NullPointerException e){
         return new ErrorResult("NOT_FOUND", e.getMessage());
     }
 }

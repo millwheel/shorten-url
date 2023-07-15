@@ -1,12 +1,11 @@
 package project.shortlink.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
+@Builder
 public class Data {
     private String shortId;
     private String url;
     private String createdAt;
+
 }
