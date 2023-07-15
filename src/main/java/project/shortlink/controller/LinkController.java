@@ -4,7 +4,7 @@ import project.shortlink.DTO.UrlResponseForm;
 import project.shortlink.DTO.UrlRequestForm;
 import project.shortlink.DTO.Data;
 import project.shortlink.entity.Link;
-import project.shortlink.exhandler.ErrorResult;
+import project.shortlink.exception.ErrorResult;
 import project.shortlink.service.LinkService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -73,18 +73,5 @@ public class LinkController {
         }
         throw new RuntimeException("URL 정보가 조회되지 않음");
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResult illegalExceptionHandler(IllegalArgumentException e){
-        return new ErrorResult("BAD", e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(RuntimeException.class)
-    public ErrorResult runtimeExceptionHandler(RuntimeException e){
-        return new ErrorResult("NOT_FOUND", e.getMessage());
-    }
-
 
 }
