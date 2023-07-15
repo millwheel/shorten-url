@@ -62,7 +62,7 @@ public class LinkController {
         throw new RuntimeException("URL 정보가 조회되지 않음");
     }
 
-    @GetMapping("/r/{short_id}")
+    @GetMapping("/redirection/{short_id}")
     @ResponseStatus(HttpStatus.FOUND)
     public void redirectOriginalUrl(@PathVariable String short_id, HttpServletResponse response) throws IOException {
         if (!short_id.matches("\\w+")) throw new IllegalArgumentException("잘못된 short id 형식");

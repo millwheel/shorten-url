@@ -32,8 +32,8 @@ public class LinkServiceImpl implements LinkService{
         SecureRandom secureRandom = new SecureRandom();
         long randomLong;
         String shortId;
-        randomLong = Integer.toUnsignedLong(secureRandom.nextInt());
         do {
+            randomLong = Integer.toUnsignedLong(secureRandom.nextInt());
             shortId = base62Service.encode(randomLong);
         } while (linkRepository.findById(shortId).isPresent());
         String now = LocalDateTime.now().toString();
