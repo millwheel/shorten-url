@@ -12,13 +12,13 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class LinkServiceImpl implements LinkService{
+public class LinkServiceSecureRandom implements LinkService{
 
     private final Base62Service base62Service;
     private final LinkRepository linkRepository;
 
     @Autowired
-    public LinkServiceImpl(Base62Service base62Service, LinkRepository linkRepository) {
+    public LinkServiceSecureRandom(Base62Service base62Service, LinkRepository linkRepository) {
         this.base62Service = base62Service;
         this.linkRepository = linkRepository;
     }
