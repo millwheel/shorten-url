@@ -25,7 +25,6 @@ public class EpochTimeWithServerNumberTest {
         long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         System.out.println("Server number is ---------------------------");
         System.out.println(createdNumber);
-
     }
 
     @Scheduled(fixedDelay = 1)

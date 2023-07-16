@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @DynamoDBTable(tableName = "link")
 public class Link {
     @DynamoDBHashKey

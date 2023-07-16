@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class LinkServiceSecureRandom implements LinkService{
 
     private final Base62Service base62Service;

@@ -24,6 +24,7 @@ class LinkServiceTest {
         this.linkRepository = linkRepository;
     }
 
+
     @Test
     void createShortLinkTest() throws UnknownHostException {
         // given
