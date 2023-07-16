@@ -1,5 +1,7 @@
 package project.shortlink.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 
@@ -7,8 +9,14 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LinkServiceTimestamp implements LinkService{
+
+    @Value("${host.number}")
+    private String serverNumber;
+
+    private AtomicInteger serialNumber;
 
     private final Base62Service base62Service;
     private final LinkRepository linkRepository;
@@ -22,15 +30,13 @@ public class LinkServiceTimestamp implements LinkService{
     public String createShortLink(String originalUrl) throws UnknownHostException {
         // This service doesn't check if original url exists in DB.
         // Use current time.
-        long currentTime = System.currentTimeMillis();
+        String currentTime = Long.toString(System.currentTimeMillis());
 
-        // Use current server address.
-        String hostAddress = InetAddress.getLocalHost().getHostAddress();
-        String[] eachNumbers = hostAddress.split("\\.");
-        long serverNumber = Long.parseLong(String.join("", eachNumbers));
+        // User atomic serial number.
+        String serialNow = Long.toString(serialNumber.getAndIncrement());
 
         // Combine current time and server address to create unique number
-        long createdNumber = currentTime + serverNumber;
+        long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
 
         // Base 62 encoding create alphanumeric short id
         String shortId = base62Service.encode(createdNumber);
@@ -42,5 +48,10 @@ public class LinkServiceTimestamp implements LinkService{
     @Override
     public Optional<Link> checkShortLink(String shortId) {
         return linkRepository.findById(shortId);
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void resetSerialNumber(){
+        serialNumber.set(0);
     }
 }
