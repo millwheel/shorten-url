@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @DynamoDBTable(tableName = "link")
 public class Link {
     @DynamoDBHashKey
@@ -16,4 +15,10 @@ public class Link {
     private String originalUrl;
     @DynamoDBAttribute
     private String createAt;
+
+    public Link(String shortId, String originalUrl, String createAt) {
+        this.shortId = shortId;
+        this.originalUrl = originalUrl;
+        this.createAt = createAt;
+    }
 }

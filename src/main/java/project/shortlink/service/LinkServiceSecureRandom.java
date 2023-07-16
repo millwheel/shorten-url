@@ -25,22 +25,22 @@ public class LinkServiceSecureRandom implements LinkService{
 
     @Override
     public String createShortLink(String originalUrl) {
+        // Check if the original url already exist in DB.
         Optional<Link> byOriginalUrl = linkRepository.findByOriginalUrl(originalUrl);
         if(byOriginalUrl.isPresent()){
             return byOriginalUrl.get().getShortId();
         }
+        // Use secure random of java.
         SecureRandom secureRandom = new SecureRandom();
         long randomLong;
         String shortId;
+        // If DB has shortId in DB already, Create shortId again with SecureRandom.
         do {
             randomLong = Integer.toUnsignedLong(secureRandom.nextInt());
             shortId = base62Service.encode(randomLong);
         } while (linkRepository.findById(shortId).isPresent());
         String now = LocalDateTime.now().toString();
-        Link link = new Link();
-        link.setShortId(shortId);
-        link.setOriginalUrl(originalUrl);
-        link.setCreateAt(now);
+        Link link = new Link(shortId, originalUrl, now);
         return linkRepository.create(link);
     }
 
