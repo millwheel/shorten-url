@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableDynamoDBRepositories(basePackages = "ab180test.shortlink.repository")
+@EnableDynamoDBRepositories(basePackages = "project.shortlink.repository")
 public class AWSConfig {
 
     @Value("${aws.accessKey}")
