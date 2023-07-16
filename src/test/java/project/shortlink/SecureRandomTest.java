@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 class SecureRandomTest {
 
     @Test
-    void SecureRandomTest(){
+    void secureRandomTest(){
         SecureRandom secureRandom = new SecureRandom();
         long number = Integer.toUnsignedLong(secureRandom.nextInt());
         System.out.println(number);
