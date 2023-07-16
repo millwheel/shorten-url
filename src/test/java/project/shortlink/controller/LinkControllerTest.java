@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.UnknownHostException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,7 +26,7 @@ class LinkControllerTest {
     }
 
     @Test
-    void createShortLinkWithHttpsTest() {
+    void createShortLinkWithHttpsTest() throws UnknownHostException {
         // given
         String pattern = "\\w+";
         String urlHttps = "https://www.thisissamplehttpurl.com/this/is/fake/url";
@@ -41,7 +43,7 @@ class LinkControllerTest {
     }
 
     @Test
-    void createShortLinkWithHttpTest() {
+    void createShortLinkWithHttpTest() throws UnknownHostException {
         // given
         String pattern = "\\w+";
         String urlHttp = "http://www.thisissamplehttpurl.com/this/is/fake/url";
@@ -71,7 +73,7 @@ class LinkControllerTest {
                 .hasMessage("잘못된 URL 형식");
     }
     @Test
-    void checkShortLinkTest() {
+    void checkShortLinkTest() throws UnknownHostException {
         // given
         String inputUrl = "https://www.thisissamplehttpurl.com/this/is/fake/url";
         UrlRequestForm urlRequestForm = new UrlRequestForm();

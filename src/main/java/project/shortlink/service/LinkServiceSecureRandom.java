@@ -34,9 +34,10 @@ public class LinkServiceSecureRandom implements LinkService{
         SecureRandom secureRandom = new SecureRandom();
         long randomLong;
         String shortId;
-        // If DB has shortId in DB already, Create shortId again with SecureRandom.
+        // If DB has short id in DB already, Create shortId again with SecureRandom.
         do {
             randomLong = Integer.toUnsignedLong(secureRandom.nextInt());
+            // Base 62 encoding create alphanumeric short id
             shortId = base62Service.encode(randomLong);
         } while (linkRepository.findById(shortId).isPresent());
         String now = LocalDateTime.now().toString();

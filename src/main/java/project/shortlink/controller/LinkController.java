@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +27,7 @@ public class LinkController {
     }
 
     @PostMapping("/short-links")
-    public UrlResponseForm createShortLink(@RequestBody UrlRequestForm urlRequestForm){
+    public UrlResponseForm createShortLink(@RequestBody UrlRequestForm urlRequestForm) throws UnknownHostException {
         String url = urlRequestForm.getUrl();
         if (!url.matches("https://\\S+") && !url.matches("http://\\S+")){
             throw new IllegalArgumentException("잘못된 URL 형식");

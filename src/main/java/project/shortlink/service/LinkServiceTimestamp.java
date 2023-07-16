@@ -3,6 +3,9 @@ package project.shortlink.service;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class LinkServiceTimestamp implements LinkService{
@@ -16,13 +19,24 @@ public class LinkServiceTimestamp implements LinkService{
     }
 
     @Override
-    public String createShortLink(String originalUrl) {
+    public String createShortLink(String originalUrl) throws UnknownHostException {
         // This service doesn't check if original url exists in DB.
+        // Use current time.
         long currentTime = System.currentTimeMillis();
-        String shortId = base62Service.encode(currentTime);
 
+        // Use current server address.
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        String[] eachNumbers = hostAddress.split("\\.");
+        long serverNumber = Long.parseLong(String.join("", eachNumbers));
 
-        return
+        // Combine current time and server address to create unique number
+        long createdNumber = currentTime + serverNumber;
+
+        // Base 62 encoding create alphanumeric short id
+        String shortId = base62Service.encode(createdNumber);
+        String now = LocalDateTime.now().toString();
+        Link link = new Link(shortId, originalUrl, now);
+        return linkRepository.create(link);
     }
 
     @Override

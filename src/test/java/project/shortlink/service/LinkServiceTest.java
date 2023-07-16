@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ class LinkServiceTest {
     }
 
     @Test
-    void createShortLinkTest() {
+    void createShortLinkTest() throws UnknownHostException {
         // given
         String pattern = "\\w+";
         String url = "https://www.thisissamplehttpurl.com/this/is/fake/url";
@@ -38,7 +39,7 @@ class LinkServiceTest {
     }
 
     @Test
-    void checkShortLink() {
+    void checkShortLink() throws UnknownHostException {
         // given
         String url = "https://www.thisissamplehttpurl.com/this/is/fake/url";
         String shortId = linkService.createShortLink(url);
