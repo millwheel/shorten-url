@@ -50,7 +50,7 @@ public class LinkServiceTimestamp implements LinkService{
         return linkRepository.findById(shortId);
     }
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 1)
     public void resetSerialNumber(){
         serialNumber.set(0);
     }
