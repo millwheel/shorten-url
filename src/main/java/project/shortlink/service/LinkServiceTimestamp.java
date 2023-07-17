@@ -35,12 +35,10 @@ public class LinkServiceTimestamp implements LinkService{
         // This service doesn't check if original url exists in DB.
         // Use current time.
         String currentTime = Long.toString(System.currentTimeMillis());
-
         // User atomic serial number.
         String serialNow = Long.toString(serialNumber.getAndIncrement());
-
         // Combine current time and server address to create unique number
-        long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
+        long createdNumber = Long.parseLong(currentTime + serverNumber);
         log.info("created number={}", createdNumber);
         // Base 62 encoding create alphanumeric short id
         String shortId = base62Service.encode(createdNumber);

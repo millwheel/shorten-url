@@ -1,5 +1,7 @@
 package project.shortlink.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 import org.junit.jupiter.api.Test;
@@ -7,12 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Slf4j
 class LinkServiceTest {
 
     private final LinkService linkService;
@@ -25,7 +34,6 @@ class LinkServiceTest {
         this.linkService = linkService;
         this.linkRepository = linkRepository;
     }
-
 
     @Test
     void createShortLinkTest() throws UnknownHostException {
@@ -50,4 +58,30 @@ class LinkServiceTest {
         assertThat(link.get().getOriginalUrl()).isEqualTo(url);
         linkRepository.deleteById(shortId);
     }
+
+    @Test
+    void multiThreadTest() throws InterruptedException {
+        int threadCount = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        AtomicReference<Set<String>> shortIdStorage = new AtomicReference<>(new HashSet<>());
+
+        for (int i = 0; i < threadCount; i++){
+            executorService.submit(() -> {
+                try{
+                    String shortId = linkService.createShortLink(url);
+                    log.info(shortId);
+                    shortIdStorage.get().add(shortId);
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+        linkRepository.deleteAll();
+        org.assertj.core.api.Assertions.assertThat(shortIdStorage.get().size()).isEqualTo(100);
+    }
+
 }

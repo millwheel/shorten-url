@@ -9,4 +9,5 @@ public interface LinkRepository {
     Optional<Link> findById(String shortId);
     Optional<Link> findByOriginalUrl(String originalUrl);
     void deleteById(String shortId);
+    void deleteAll();
 }

@@ -1,5 +1,6 @@
 package project.shortlink.repository;
 
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import project.shortlink.entity.Link;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,10 @@ public class DynamoLinkRepository implements LinkRepository{
     @Override
     public void deleteById(String shortId) {
         repository.deleteById(shortId);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 }
