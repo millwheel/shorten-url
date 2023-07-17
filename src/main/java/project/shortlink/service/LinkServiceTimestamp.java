@@ -22,6 +22,7 @@ public class LinkServiceTimestamp implements LinkService{
     private static AtomicInteger serialNumber = new AtomicInteger(0);
 
     private final Base62Service base62Service;
+
     private final LinkRepository linkRepository;
 
     public LinkServiceTimestamp(Base62Service base62Service, LinkRepository linkRepository) {

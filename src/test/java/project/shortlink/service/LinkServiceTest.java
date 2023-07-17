@@ -18,6 +18,8 @@ class LinkServiceTest {
     private final LinkService linkService;
     private final LinkRepository linkRepository;
 
+    private final String url = "https://www.thisissamplehttpurl.com/this/is/fake/url";
+
     @Autowired
     LinkServiceTest(LinkService linkService, LinkRepository linkRepository) {
         this.linkService = linkService;
@@ -29,7 +31,6 @@ class LinkServiceTest {
     void createShortLinkTest() throws UnknownHostException {
         // given
         String pattern = "\\w+";
-        String url = "https://www.thisissamplehttpurl.com/this/is/fake/url";
         // when
         String shortId = linkService.createShortLink(url);
         Optional<Link> link = linkRepository.findById(shortId);
@@ -42,7 +43,6 @@ class LinkServiceTest {
     @Test
     void checkShortLink() throws UnknownHostException {
         // given
-        String url = "https://www.thisissamplehttpurl.com/this/is/fake/url";
         String shortId = linkService.createShortLink(url);
         // when
         Optional<Link> link = linkService.checkShortLink(shortId);

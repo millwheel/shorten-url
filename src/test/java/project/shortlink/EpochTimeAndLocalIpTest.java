@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.security.SecureRandom;
+
+
+// Using local ip is not good idea because the ip address has 32bit length.
 
 class EpochTimeAndLocalIpTest {
 
