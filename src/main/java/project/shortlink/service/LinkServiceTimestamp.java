@@ -20,7 +20,7 @@ public class LinkServiceTimestamp implements LinkService{
     @Value("${host.number}")
     private String serverNumber;
 
-    private static AtomicInteger serialNumber = new AtomicInteger(0);
+    private static final AtomicInteger serialNumber = new AtomicInteger(0);
 
     private final Base62Service base62Service;
 
@@ -37,7 +37,7 @@ public class LinkServiceTimestamp implements LinkService{
         // Use current time.
         String currentTime = Long.toString(System.currentTimeMillis());
         // User atomic serial number.
-        String serialNow = Long.toString(serialNumber.getAndIncrement());
+        String serialNow = getSerialNumber();
         // Combine current time and server address to create unique number
         long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         // Base 62 encoding create alphanumeric short id
@@ -50,6 +50,10 @@ public class LinkServiceTimestamp implements LinkService{
     @Override
     public Optional<Link> checkShortLink(String shortId) {
         return linkRepository.findById(shortId);
+    }
+
+    public synchronized String getSerialNumber(){
+        return Long.toString(serialNumber.getAndIncrement());
     }
 
     @Scheduled(fixedDelay = 1)
