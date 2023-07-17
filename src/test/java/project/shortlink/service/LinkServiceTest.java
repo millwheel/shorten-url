@@ -65,7 +65,6 @@ class LinkServiceTest {
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         AtomicReference<Set<String>> shortIdStorage = new AtomicReference<>(new HashSet<>());
-
         for (int i = 0; i < threadCount; i++){
             executorService.submit(() -> {
                 try{
@@ -81,7 +80,7 @@ class LinkServiceTest {
         }
         countDownLatch.await();
         linkRepository.deleteAll();
-        org.assertj.core.api.Assertions.assertThat(shortIdStorage.get().size()).isEqualTo(100);
+        assertThat(shortIdStorage.get().size()).isEqualTo(100);
     }
 
 }

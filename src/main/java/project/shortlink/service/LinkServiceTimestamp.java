@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
+@Service
 public class LinkServiceTimestamp implements LinkService{
 
     @Value("${host.number}")
@@ -38,11 +39,9 @@ public class LinkServiceTimestamp implements LinkService{
         // User atomic serial number.
         String serialNow = Long.toString(serialNumber.getAndIncrement());
         // Combine current time and server address to create unique number
-        long createdNumber = Long.parseLong(currentTime + serverNumber);
-        log.info("created number={}", createdNumber);
+        long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         // Base 62 encoding create alphanumeric short id
         String shortId = base62Service.encode(createdNumber);
-        log.info("created shortId={}", shortId);
         String now = LocalDateTime.now().toString();
         Link link = new Link(shortId, originalUrl, now);
         return linkRepository.create(link);
