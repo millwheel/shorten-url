@@ -1,7 +1,6 @@
 package project.shortlink.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 import org.junit.jupiter.api.Test;

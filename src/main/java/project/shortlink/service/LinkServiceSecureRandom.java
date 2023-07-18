@@ -2,9 +2,7 @@ package project.shortlink.service;
 
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;

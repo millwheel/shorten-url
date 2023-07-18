@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,12 +30,11 @@ public class LinkServiceTimestamp implements LinkService{
     }
 
     @Override
-    public String createShortLink(String originalUrl) throws UnknownHostException {
-        // This service doesn't check if original url exists in DB.
+    public String createShortLink(String originalUrl) {
         // Use current time.
         String currentTime = Long.toString(System.currentTimeMillis());
         // User atomic serial number.
-        String serialNow = getSerialNumber();
+        String serialNow = Long.toString(serialNumber.getAndIncrement());
         // Combine current time and server address to create unique number
         long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         // Base 62 encoding create alphanumeric short id
@@ -50,10 +47,6 @@ public class LinkServiceTimestamp implements LinkService{
     @Override
     public Optional<Link> checkShortLink(String shortId) {
         return linkRepository.findById(shortId);
-    }
-
-    public synchronized String getSerialNumber(){
-        return Long.toString(serialNumber.getAndIncrement());
     }
 
     @Scheduled(fixedDelay = 1)
