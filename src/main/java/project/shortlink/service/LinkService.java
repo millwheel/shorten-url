@@ -8,4 +8,5 @@ public interface LinkService {
 
     String createShortLink(String originalUrl);
     Optional<Link> checkShortLink(String shortId);
+
 }

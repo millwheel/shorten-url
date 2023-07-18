@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
+import project.shortlink.timer.Scheduler;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -17,8 +18,6 @@ public class LinkServiceTimestamp implements LinkService{
 
     @Value("${host.number}")
     private String serverNumber;
-
-    private static final AtomicInteger serialNumber = new AtomicInteger(0);
 
     private final Base62Service base62Service;
 
@@ -34,14 +33,15 @@ public class LinkServiceTimestamp implements LinkService{
         // Use current time.
         String currentTime = Long.toString(System.currentTimeMillis());
         // User atomic serial number.
+        AtomicInteger serialNumber = Scheduler.serialInteger;
         String serialNow = Long.toString(serialNumber.getAndIncrement());
         // Combine current time and server address to create unique number
         long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         // Base 62 encoding create alphanumeric short id
         String shortId = base62Service.encode(createdNumber);
-        String now = LocalDateTime.now().toString();
-        Link link = new Link(shortId, originalUrl, now);
-        return linkRepository.create(link);
+//        String now = LocalDateTime.now().toString();
+//        Link link = new Link(shortId, originalUrl, now);
+        return shortId;
     }
 
     @Override
@@ -49,8 +49,4 @@ public class LinkServiceTimestamp implements LinkService{
         return linkRepository.findById(shortId);
     }
 
-    @Scheduled(fixedDelay = 1)
-    public void resetSerialNumber(){
-        serialNumber.set(0);
-    }
 }

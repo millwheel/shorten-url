@@ -6,11 +6,13 @@ import project.shortlink.repository.LinkRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import project.shortlink.timer.Scheduler;
 
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,14 +62,19 @@ class LinkServiceTest {
 
     @Test
     void multiThreadTest() throws InterruptedException {
-        int threadCount = 100;
+        int threadCount = 1000;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        Scheduler scheduler = new Scheduler();
+        scheduler.workTimer();
         AtomicReference<Set<String>> shortIdStorage = new AtomicReference<>(new HashSet<>());
         for (int i = 0; i < threadCount; i++){
             executorService.submit(() -> {
                 try{
                     String shortId = linkService.createShortLink(url);
+                    if (shortIdStorage.get().contains(shortId)){
+                        System.out.println(shortId + " already exists.");
+                    }
                     log.info(shortId);
                     shortIdStorage.get().add(shortId);
                 }catch (Exception e){
@@ -78,8 +85,8 @@ class LinkServiceTest {
             });
         }
         countDownLatch.await();
-        linkRepository.deleteAll();
-        assertThat(shortIdStorage.get().size()).isEqualTo(100);
+//        linkRepository.deleteAll();
+        assertThat(shortIdStorage.get().size()).isEqualTo(1000);
     }
 
 }
