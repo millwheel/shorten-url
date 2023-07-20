@@ -1,12 +1,14 @@
 package project.shortlink.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import project.shortlink.entity.Link;
 import project.shortlink.repository.LinkRepository;
 import project.shortlink.timer.Scheduler;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,6 +23,7 @@ public class LinkServiceTimestamp implements LinkService{
 
     private final LinkRepository linkRepository;
 
+    @Autowired
     public LinkServiceTimestamp(Base62Service base62Service, LinkRepository linkRepository) {
         this.base62Service = base62Service;
         this.linkRepository = linkRepository;
@@ -31,18 +34,15 @@ public class LinkServiceTimestamp implements LinkService{
         // Use current time.
         String currentTime = Long.toString(System.currentTimeMillis());
         // User atomic serial number.
-//        String serialNow = getSerial();
-        String serialNow = getSerialFromScheduler();
-
+        String serialNow = getSerialNumber();
         // Combine current time and server address to create unique number
         long createdNumber = Long.parseLong(currentTime + serverNumber + serialNow);
         log.info("current time = {}, serial number = {}", currentTime, serialNow);
         // Base 62 encoding create alphanumeric short id
         String shortId = base62Service.encode(createdNumber);
-//        String now = LocalDateTime.now().toString();
-//        Link link = new Link(shortId, originalUrl, now);
-//        return linkRepository.create(link);
-        return shortId;
+        String now = LocalDateTime.now().toString();
+        Link link = new Link(shortId, originalUrl, now);
+        return linkRepository.create(link);
     }
 
     @Override
@@ -50,18 +50,12 @@ public class LinkServiceTimestamp implements LinkService{
         return linkRepository.findById(shortId);
     }
 
-    public synchronized String getSerialFromScheduler(){
-        return Integer.toString(Scheduler.serialNumber.getAndIncrement());
+    public synchronized String getSerialNumber(){
+        int serialNow = serialNumber.getAndIncrement();
+        if (serialNumber.get() == 4097){
+            serialNumber.set(0);
+        }
+        return Integer.toString(serialNow);
     }
-
-
-//    public synchronized String getSerial(){
-//        return Long.toString(serialNumber.getAndIncrement());
-//    }
-//
-//    @Scheduled(fixedDelay = 100)
-//    public void resetSerial(){
-//        serialNumber.set(0);
-//    }
 
 }

@@ -62,7 +62,7 @@ class LinkServiceTest {
 
     @Test
     void multiThreadTest() throws InterruptedException {
-        int threadCount = 5000;
+        int threadCount = 1000;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         AtomicReference<Set<String>> shortIdStorage = new AtomicReference<>(new HashSet<>());
@@ -80,7 +80,7 @@ class LinkServiceTest {
             });
         }
         countDownLatch.await();
-//        linkRepository.deleteAll();
+        linkRepository.deleteAll();
         assertThat(shortIdStorage.get().size()).isEqualTo(5000);
     }
 

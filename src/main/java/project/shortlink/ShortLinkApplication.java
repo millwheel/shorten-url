@@ -9,8 +9,6 @@ public class ShortLinkApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShortLinkApplication.class, args);
-		Scheduler scheduler = new Scheduler();
-		scheduler.workTimer();
 	}
 
 }
