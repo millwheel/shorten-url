@@ -37,7 +37,9 @@ class Base62ServiceTest {
         long number = Integer.toUnsignedLong(secureRandom.nextInt());
         String pattern = "[a-zA-Z0-9]+";
         // when
+        System.out.println(number);
         String encoded = base62Service.encode(number);
+        System.out.println(encoded);
         // then
         assertTrue(encoded.matches(pattern));
     }
