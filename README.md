@@ -2,10 +2,19 @@
 
 This api is to create short url to replace original long url.
 
+### example
+If given url is "https://www.thisissamplehttpurl.com/this/is/fake/url".
+
+The system creates short id such as "8pjjNX9V" which is consist of alphanumeric and returns it to client.
+
+### method to create short id
+
 There are two options of method to create short url.
 
 1. Use SecureRandom of Java, encode it with Base62.
 2. Use Timestamp and server ip address, encode it with Base62.
+
+Encoding with base62 is common point, so we would check the base 62 encoding first.
 
 ## 0. Base 62 Encoding
 

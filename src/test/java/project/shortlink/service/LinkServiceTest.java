@@ -44,6 +44,7 @@ class LinkServiceTest {
         String shortId = linkService.createShortLink(url);
         Optional<Link> link = linkRepository.findById(shortId);
         // then
+        System.out.println(shortId);
         assertTrue(shortId.matches(pattern));
         assertThat(link.get().getShortId()).isEqualTo(shortId);
         linkRepository.deleteById(shortId);
