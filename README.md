@@ -2,13 +2,14 @@
 
 This api is to create short url to replace original long url.
 
-### example
+## function summary
 If given url is "https://www.thisissamplehttpurl.com/this/is/fake/url".
 
 The system creates short id such as "8pjjNX9V" which is consist of alphanumeric and returns it to client.
 
 if client requests redirection with short id "8pjjNX9V", it goes to original long url "https://www.thisissamplehttpurl.com/this/is/fake/url" redirected by the server.
-### method to create short id
+
+## method to create short id
 
 There are two options of method to create short url.
 
